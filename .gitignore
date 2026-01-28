@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# Dataset and Models (Too large for GitHub)
+archive/
+*.pth
+*.tar.gz
+
+# Node / Web App
+node_modules/
+web_app/
+
+# OS
+.DS_Store
+Thumbs.db
