@@ -8,15 +8,35 @@ from animal_classifier.domain.entities.image import LabeledImage
 from animal_classifier.domain.repositories.dataset_repository import DatasetRepository
 from animal_classifier.config import settings
 
+# Auto-detect dataset directory: prefer dataset_lite (for Render/GitHub),
+# fall back to the full archive dataset if dataset_lite doesn't exist.
+_BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
+_LITE_DIR = _BASE_DIR / "dataset_lite"
+_LITE_TRANSLATION = _LITE_DIR / "translation.json"
+
+def _resolve_dataset_dir() -> Path:
+    if _LITE_DIR.exists():
+        print(f"[DatasetLoader] Using dataset_lite: {_LITE_DIR}")
+        return _LITE_DIR
+    print(f"[DatasetLoader] Using full archive dataset: {settings.DATASET_DIR}")
+    return settings.DATASET_DIR
+
+def _resolve_translation_file() -> Path:
+    if _LITE_TRANSLATION.exists():
+        return _LITE_TRANSLATION
+    return settings.TRANSLATION_FILE
+
 class ImageDatasetLoader(DatasetRepository):
     """
     Concrete implementation of DatasetRepository.
     Loads images from the filesystem and handles stratified splitting.
+    Automatically uses dataset_lite/ when the full archive dataset is unavailable
+    (e.g. on Render or GitHub where archive/ is excluded from .gitignore).
     """
 
-    def __init__(self, data_dir: Path = settings.DATASET_DIR, translation_file: Path = settings.TRANSLATION_FILE):
-        self.data_dir = data_dir
-        self.translation_file = translation_file
+    def __init__(self, data_dir: Path = None, translation_file: Path = None):
+        self.data_dir = data_dir if data_dir is not None else _resolve_dataset_dir()
+        self.translation_file = translation_file if translation_file is not None else _resolve_translation_file()
         self._species_cache: List[Species] = []
         self._images_cache: Dict[str, List[LabeledImage]] = {} # Map species_name -> list of images
         self._loaded = False
