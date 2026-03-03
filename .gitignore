@@ -7,11 +7,15 @@ venv/
 
 # Dataset and Models (Too large for GitHub)
 archive/
-*.pth
+# model.pth is intentionally NOT ignored — Render needs it to run predictions
+model_fast.pth
 *.tar.gz
 
-# Node / Web App
+# Node / Web App (Backend-only upload)
 node_modules/
+web_app/node_modules/
+web_app/dist/
+web_app/.env
 web_app/
 
 # OS
