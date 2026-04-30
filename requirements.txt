@@ -1,8 +1,0 @@
-fastapi
-uvicorn[standard]
-gunicorn
-python-multipart
-torch
-torchvision
-pillow
-numpy
