@@ -1,3 +1,5 @@
+from typing import Any
+
 import torch
 from torchvision import transforms
 from PIL import Image

@@ -11,13 +11,15 @@ archive/
 model_fast.pth
 *.tar.gz
 
-# Node / Web App (Backend-only upload)
+# Node / Web App
 node_modules/
 web_app/node_modules/
 web_app/dist/
 web_app/.env
-web_app/
 
 # OS
 .DS_Store
 Thumbs.db
+
+# Local venv
+.venv/
